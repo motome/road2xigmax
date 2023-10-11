@@ -46,9 +46,18 @@ def after_request(response):
     db.close()
     return response
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
+
+@app.route("/new")
+def new():
+    return render_template("second_screen.html")
+
+@app.route("/course_recommendation")
+def course_recommendation():
+    # RECOMMENDERの第一ページ(仮設)に遷移
+    return render_template("recommender_top.html")
 
 
 # ...（その他のルートと関数）
