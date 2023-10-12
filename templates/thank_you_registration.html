@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登録完了</title>
+</head>
+<body>
+    <h2>ありがとうございました</h2>
+    <p>登録をお受けしました。ご登録のメールアドレスにメールを送信しますのでご確認ください。</p>
+
+    <ul>
+        <li>名前: {{ name }}</li>
+        <li>生年月日: {{ birthday }}</li>
+        <li>メールアドレス: {{ email }}</li>
+        <li>パスワード: {{ "*" * password_len }}</li>
+        <li>コース名: {{ course }}</li>
+    </ul>
+</body>
+</html>

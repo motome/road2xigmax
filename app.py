@@ -11,6 +11,7 @@ from peewee import Model, IntegerField, CharField, TextField, TimestampField, Sq
 load_dotenv()
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY") or "a_default_secret_key"
 
 # dbへの接続
 db = connect(os.environ.get("DATABASE"))
@@ -91,8 +92,6 @@ def thank_you():
 def user_registration():
     chosen_course = request.args.get("course", "")
     if request.method == "POST":
-        # フォームのデータの処理とDBへの保存処理をここに追加します。
-        # 続いて、入力の検証やデータベースへの保存処理などを行います。
         pass
     return render_template("user_registration.html", course=chosen_course)
 
@@ -105,12 +104,12 @@ def submit_registration():
     password = request.form["password"]
     chosen_course = request.form["course"]
     
-    # メールアドレスが一致しない場合
+    # メールアドレスの不一致
     if email1 != email2:
         flash("メールアドレスが一致しません")
         return redirect(url_for('user_registration', course=chosen_course))
-    # メールアドレスが一致する場合、ユーザー情報をデータベースに保存
-    hashed_password = generate_password_hash(password, method="sha256")
+    # メールアドレスが一致→ユーザー情報をデータベースに保存
+    hashed_password = generate_password_hash(password, method="pbkdf2:sha256")
     new_user = User(
         name=name,
         birthday=birthday,
