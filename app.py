@@ -73,22 +73,56 @@ def login():
 def choose_course():
     return render_template("choose_course.html")
 
-
 @app.route("/confirm_course")
 def confirm_course():
     chosen_course = request.args.get("course", "")
     return render_template("confirm_course.html", course=chosen_course)
-
 
 @app.route("/register_course")
 def register_course():
     chosen_course = request.args.get("course", "")
     return render_template("register_course.html", course=chosen_course)
 
-
 @app.route("/thank_you")
 def thank_you():
     return render_template("thank_you.html")
+
+@app.route("/user_registration", methods=["GET", "POST"])
+def user_registration():
+    chosen_course = request.args.get("course", "")
+    if request.method == "POST":
+        # フォームのデータの処理とDBへの保存処理をここに追加します。
+        # 続いて、入力の検証やデータベースへの保存処理などを行います。
+        pass
+    return render_template("user_registration.html", course=chosen_course)
+
+@app.route("/submit_registration", methods=["POST"])
+def submit_registration():
+    name = request.form["name"]
+    birthday = request.form["birthday"]
+    email1 = request.form["email1"]
+    email2 = request.form["email2"]
+    password = request.form["password"]
+    chosen_course = request.form["course"]
+    
+    # メールアドレスが一致しない場合
+    if email1 != email2:
+        flash("メールアドレスが一致しません")
+        return redirect(url_for('user_registration', course=chosen_course))
+    # メールアドレスが一致する場合、ユーザー情報をデータベースに保存
+    hashed_password = generate_password_hash(password, method="sha256")
+    new_user = User(
+        name=name,
+        birthday=birthday,
+        email=email1,
+        password_hashed=hashed_password,
+        course=chosen_course,
+        register_time=datetime.datetime.now()
+    )
+    new_user.save()
+
+    return render_template('thank_you_registration.html', name=name, birthday=birthday, email=email1, password_len=len(password), course=chosen_course)
+
 
 
 # ...（その他のルートと関数）

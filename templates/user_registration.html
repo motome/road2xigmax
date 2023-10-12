@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ユーザー登録</title>
+</head>
+<body>
+    <h2>ユーザーご登録をお願いします</h2>
+    <form action="/submit_registration" method="post">
+        <label for="name">名前:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="birthday">生年月日:</label>
+        <input type="date" id="birthday" name="birthday" required>
+        
+        <label for="email1">メールアドレス1:</label>
+        <input type="email" id="email1" name="email1" required>
+        
+        <label for="email2">メールアドレス2:</label>
+        <input type="email" id="email2" name="email2" required>
+        
+        <label for="password">パスワード:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <input type="hidden" name="course" value="{{ course }}">
+        
+        <button type="submit">送信</button>
+    </form>
+
+    {% if not email_match %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                         <li style="color: red;">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}    
+    {% endif %}
+
+
+
+
+
+
+
+
+    <form method="post" action="{{ url_for('submit_registration') }}">
+        <!-- その他の入力フィールド... -->
+        <input type="submit" value="登録">
+    </form>    
+  
+</body>
+</html>
+
