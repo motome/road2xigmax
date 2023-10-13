@@ -135,6 +135,30 @@ def submit_registration():
     )
 
 
+# @app.route("/login", methods=["GET", "POST"])
+# def login():
+#    if request.method == "POST":
+#        email = request.form["email"]
+#        password = request.form["password"]
+#
+#        user = User.select().where(User.email == email).first()
+
+#        # メールアドレスがデータベースにない場合
+#        if not user:
+#            flash("メールアドレスが登録されていません")
+#            return redirect(url_for("login"))
+
+#        # パスワードが一致しない場合
+#        if not check_password_hash(user.password_hashed, password):
+#            flash("メールアドレスとパスワードが一致しません")
+#            return redirect(url_for("login"))
+#
+#        return redirect(url_for("menu"))
+#
+#    return render_template("login.html")
+#
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -145,12 +169,12 @@ def login():
 
         # メールアドレスがデータベースにない場合
         if not user:
-            flash("メールアドレスが登録されていません")
+            flash("メールアドレスが登録されていません もう一度入力してください")
             return redirect(url_for("login"))
 
         # パスワードが一致しない場合
         if not check_password_hash(user.password_hashed, password):
-            flash("メールアドレスとパスワードが一致しません")
+            flash("メールアドレスとパスワードが一致しません  もう一度入力してくださ")
             return redirect(url_for("login"))
 
         return redirect(url_for("menu"))
