@@ -134,6 +134,7 @@ def submit_registration():
         course=chosen_course,
     )
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -167,12 +168,63 @@ def menu():
 def edit_data():
     # 13. のステップ
     if request.method == "POST":
-        # ここで入力データの更新をデータベースに保存する処理
+        # 入力データの更新をデータベースに保存する処理
         return redirect(url_for("confirm_data"))
 
     courses = ["Course 1", "Course 2", "Course 3", "Course 4", "Course 5"]
     return render_template("edit_data.html", courses=courses)
 
+
+@app.route("/reselect_course", methods=["GET", "POST"])
+def reselect_course():
+    if request.method == "POST":
+        # コースデータの更新をデータベースに保存する処理
+        return redirect(url_for("confirm_course2"))
+
+    courses = ["Course 1", "Course 2", "Course 3", "Course 4", "Course 5"]
+    return render_template("reselect_course.html", courses=courses)
+
+
+@app.route("/confirm_course2")
+def confirm_course2():
+    chosen_course = request.args.get("course", "")
+    return render_template("confirm_course2.html", course=chosen_course)
+
+
+@app.route("/register_course2")
+def register_course2():
+    chosen_course = request.args.get("course", "")
+    return render_template("update_finished.html", course=chosen_course)
+
+
+
+@app.route("/cancel_course", methods=["GET", "POST"])
+def cancel_course():
+    if request.method == "POST":
+        decision = request.form.get("confirm")
+        if decision == "yes":
+            return redirect(url_for("confirm_cancel"))
+        else:
+            return redirect(url_for("menu"))
+    return render_template("cancel_course.html")
+
+
+@app.route("/confirm_cancel", methods=["GET", "POST"])
+def confirm_cancel():
+    return render_template("confirm_cancel.html")
+
+@app.route("/handle_confirm_cancel", methods=["POST"])
+def handle_confirm_cancel():
+    decision = request.form.get("confirm")
+    if decision == "yes":
+        return redirect(url_for("thank_you_cancel"))
+    else:
+        return redirect(url_for("menu"))
+
+
+@app.route("/thank_you_cancel")
+def thank_you_cancel():
+    return render_template("thank_you_cancel.html")
 
 @app.route("/confirm_data")
 def confirm_data():
