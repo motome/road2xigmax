@@ -214,8 +214,8 @@ def edit_data():
         user.save()
 
         flash("ユーザー情報を更新しました。")
-        return redirect(url_for("menu"))
-
+        
+        return redirect(url_for("thank_you_edit"))
     else:
         courses = ["Course 1", "Course 2", "Course 3", "Course 4", "Course 5"]
         return render_template("edit_data.html", courses=courses, name=user.name, birthday=user.birthday, email=user.email, current_course=user.course)
@@ -278,12 +278,12 @@ def confirm_data():
     return render_template("confirm_data.html")
 
 
-@app.route("/thank_you_edit", methods=["POST"])
+@app.route("/thank_you_edit", methods=["GET"])
 def thank_you_edit():
     # 15. と 16. のステップ
-    if request.form.get("confirm") == "no":
-        return redirect(url_for("edit_data"))
-    elif request.form.get("confirm") == "yes":
+    # if request.form.get("confirm") == "no":
+    #     return redirect(url_for("edit_data"))
+    # elif request.form.get("confirm") == "yes":
         # ここで変更をデータベースに保存
         return render_template("thank_you_edit.html")
 

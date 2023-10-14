@@ -5,7 +5,7 @@
 </head>
 <body>
     <h2>修正する項目を変更して送信ボタンを押してください</h2>
-    <form action="/edit_data" method="post">
+    <form action="{{ url_for('edit_data') }}" method="post">
         <label>名前:</label>
         <input type="text" name="name" value="{{ name }}">
         <label>生年月日:</label>
