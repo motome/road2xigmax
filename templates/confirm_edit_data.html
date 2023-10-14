@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>修正確認</title>
+</head>
+<body>
+    <h1>あなたのデータを次のとおり修正します。よろしいですか？</h1>
+    <ul>
+        <li>名前: {{ session['temp_data']['name'] }}</li>
+        <li>誕生日: {{ session['temp_data']['birthday'] }}</li>
+        <li>メール: {{ session['temp_data']['email'] }}</li>
+        <li>コース: {{ session['temp_data']['course'] }}</li>
+    </ul>
+
+    <form action="/confirm_edit" method="post">
+        <button type="submit" name="action" value="修正する">修正する</button>
+        <button type="submit" name="action" value="元に戻る">元に戻る</button>
+        <button type="submit" name="action" value="修正を終了する">修正を終了する</button>
+    </form>
+</body>
+</html>

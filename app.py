@@ -2,7 +2,7 @@ import os
 import datetime
 import logging
 from playhouse.db_url import connect
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from peewee import Model, IntegerField, CharField, TextField, TimestampField, SqliteDatabase
@@ -22,7 +22,7 @@ if not db.connect():
 
 
 class User(Model):
-    id = IntegerField(primary_key=True)  
+    id = IntegerField(primary_key=True)
     name = CharField()
     birthday = CharField()
     email = CharField(unique=True)
@@ -61,8 +61,8 @@ def new():
 
 @app.route("/course_recommendation")
 def course_recommendation():
-    # RECOMMENDERの第一ページ(仮設)に遷移
     return render_template("recommender_top.html")
+
 
 @app.route("/recommend_course", methods=["POST"])
 def recommend_course():
@@ -85,14 +85,11 @@ def recommend_course():
         "3,1,2": "申し訳ございません。お勧めのコースがございません。改めて選び直してください。",
         "3,2,1": "八幡平コースがお勧めです",
         "3,2,2": "八幡平コースをご検討ください。ただし、2週間集中コースになります。",
-
     }
 
     recommended_course = recommendations.get(recommendation_key, "選択の組み合わせが不正です")
 
     return render_template("recommended_course.html", course=recommended_course)
-
-
 
 
 @app.route("/choose_course")
@@ -178,9 +175,11 @@ def login():
             flash("メールアドレスとパスワードが一致しません  もう一度入力してくださ")
             return redirect(url_for("login"))
 
-        return redirect(url_for("menu"))
-
+        if user and check_password_hash(user.password_hashed, password):
+            session["user_email"] = email  # ここでメールアドレスをセッションに保存
+            return redirect(url_for("menu"))
     return render_template("login.html")
+
 
 
 @app.route("/menu")
@@ -188,17 +187,38 @@ def menu():
     # 12. のステップ
     return render_template("menu.html")
 
-
 @app.route("/edit_data", methods=["GET", "POST"])
 def edit_data():
-    # 13. のステップ
+    user_email = session.get("user_email")
+    if not user_email:
+        flash("ログインしてください。")
+        return redirect(url_for("login"))
+
+    user = User.select().where(User.email == user_email).first()
+    if not user:
+        flash("ユーザー情報が見つかりません。")
+        return redirect(url_for("menu"))
+
     if request.method == "POST":
-        # 入力データの更新をデータベースに保存する処理
-        return redirect(url_for("confirm_data"))
+        # POSTで送信された情報を取得
+        new_name = request.form.get("name")
+        new_birthday = request.form.get("birthday")
+        new_email = request.form.get("email")
+        new_course = request.form.get("course")
 
-    courses = ["Course 1", "Course 2", "Course 3", "Course 4", "Course 5"]
-    return render_template("edit_data.html", courses=courses)
+        # データベースの情報を更新
+        user.name = new_name
+        user.birthday = new_birthday
+        user.email = new_email
+        user.course = new_course
+        user.save()
 
+        flash("ユーザー情報を更新しました。")
+        return redirect(url_for("menu"))
+
+    else:
+        courses = ["Course 1", "Course 2", "Course 3", "Course 4", "Course 5"]
+        return render_template("edit_data.html", courses=courses, name=user.name, birthday=user.birthday, email=user.email, current_course=user.course)
 
 @app.route("/reselect_course", methods=["GET", "POST"])
 def reselect_course():
@@ -222,7 +242,6 @@ def register_course2():
     return render_template("update_finished.html", course=chosen_course)
 
 
-
 @app.route("/cancel_course", methods=["GET", "POST"])
 def cancel_course():
     if request.method == "POST":
@@ -238,6 +257,7 @@ def cancel_course():
 def confirm_cancel():
     return render_template("confirm_cancel.html")
 
+
 @app.route("/handle_confirm_cancel", methods=["POST"])
 def handle_confirm_cancel():
     decision = request.form.get("confirm")
@@ -250,6 +270,7 @@ def handle_confirm_cancel():
 @app.route("/thank_you_cancel")
 def thank_you_cancel():
     return render_template("thank_you_cancel.html")
+
 
 @app.route("/confirm_data")
 def confirm_data():
