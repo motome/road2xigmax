@@ -1,9 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>RECOMMENDER</title>
-</head>
-<body>
-    <h1>このページはRECOMMENDERの第一ページ(仮設)です</h1>
-</body>
-</html>
+<!-- recommender_top.html -->
+<h2>選択システムにようこそ</h2>
+<p>あなたの条件を選んでください</p>
+
+<form action="{{ url_for('recommend_course') }}" method="post">
+    <h4>テクニカルスキルについて以下の3つの中から選択してください。</h4>
+    <input type="radio" name="technical" value="1" required> ドローン<br>
+    <input type="radio" name="technical" value="2"> DX<br>
+    <input type="radio" name="technical" value="3"> ドローンとDX両方<br>
+
+    <h4>ビジネススキルについては、以下の2つの中から選択してください</h4>
+    <input type="radio" name="business" value="1" required> デザイン思考<br>
+    <input type="radio" name="business" value="2"> 起業入門<br>
+
+    <h4>期間については、以下の2つの中から選択してください</h4>
+    <input type="radio" name="duration" value="1" required> １or２週間集中コース<br>
+    <input type="radio" name="duration" value="2"> 週末のみ1週間コース<br>
+
+    <input type="submit" value="選択完了">
+</form>

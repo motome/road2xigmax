@@ -22,7 +22,7 @@ if not db.connect():
 
 
 class User(Model):
-    id = IntegerField(primary_key=True)  # idは自動で追加されるが明示
+    id = IntegerField(primary_key=True)  
     name = CharField()
     birthday = CharField()
     email = CharField(unique=True)
@@ -64,10 +64,35 @@ def course_recommendation():
     # RECOMMENDERの第一ページ(仮設)に遷移
     return render_template("recommender_top.html")
 
+@app.route("/recommend_course", methods=["POST"])
+def recommend_course():
+    technical_choice = request.form.get("technical")
+    business_choice = request.form.get("business")
+    duration_choice = request.form.get("duration")
 
-# @app.route("/login")
-# def login():
-#    return render_template("login.html")
+    recommendation_key = f"{technical_choice},{business_choice},{duration_choice}"
+
+    recommendations = {
+        "1,1,1": "磐梯コースがお勧めです",
+        "1,1,2": "鎌倉コースがお勧めです",
+        "1,2,1": "八幡平コースがお勧めです。(ただし、ドローンも学習することになります)",
+        "1,2,2": "宇都宮コースがお勧めです",
+        "2,1,1": "館山コースがお勧めです",
+        "2,1,2": "館山コースをご検討ください。(ただし、1週間集中コースになります)",
+        "2,2,1": "館山コースがお勧めです",
+        "2,2,2": "館山コースをご検討ください。(ただし、1週間集中コースになります)",
+        "3,1,1": "磐梯コースか八幡平コースをご検討ください。(ただし、磐梯コースではドローンを学ぶことができません。八幡平コースの場合はデザイン思考を学ぶことができません)",
+        "3,1,2": "申し訳ございません。お勧めのコースがございません。改めて選び直してください。",
+        "3,2,1": "八幡平コースがお勧めです",
+        "3,2,2": "八幡平コースをご検討ください。ただし、2週間集中コースになります。",
+
+    }
+
+    recommended_course = recommendations.get(recommendation_key, "選択の組み合わせが不正です")
+
+    return render_template("recommended_course.html", course=recommended_course)
+
+
 
 
 @app.route("/choose_course")
