@@ -287,6 +287,10 @@ def thank_you_edit():
         # ここで変更をデータベースに保存
         return render_template("thank_you_edit.html")
 
+@app.route("/logout")
+def logout():
+    session.pop("user_email", None)  # セッションからメールアドレスを削除
+    return redirect(url_for("index"))
 
 # ...（その他のルートと関数）
 
