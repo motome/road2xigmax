@@ -6,10 +6,10 @@
 <body>
     <h1>あなたのデータを次のとおり修正します。よろしいですか？</h1>
     <ul>
-        <li>名前: {{ session['temp_data']['name'] }}</li>
-        <li>誕生日: {{ session['temp_data']['birthday'] }}</li>
-        <li>メール: {{ session['temp_data']['email'] }}</li>
-        <li>コース: {{ session['temp_data']['course'] }}</li>
+        <li>名前: {{ session['temp_data']['name'] }}</li><br>
+        <li>誕生日: {{ session['temp_data']['birthday'] }}</li><br>
+        <li>メール: {{ session['temp_data']['email'] }}</li><br>
+        <li>コース: {{ session['temp_data']['course'] }}</li><br>
     </ul>
 
     <form action="/confirm_edit" method="post">

@@ -7,19 +7,19 @@
     <h2>修正する項目を変更して送信ボタンを押してください</h2>
     <form action="{{ url_for('edit_data') }}" method="post">
         <label>名前:</label>
-        <input type="text" name="name" value="{{ name }}">
+        <input type="text" name="name" value="{{ name }}"><br>
         <label>生年月日:</label>
-        <input type="date" name="birthday" value="{{ birthday }}">
+        <input type="date" name="birthday" value="{{ birthday }}"><br>
         <label>メールアドレス:</label>
-        <input type="email" name="email" value="{{ email }}">
+        <input type="email" name="email" value="{{ email }}"><br>
         <label>パスワード:</label>
-        <input type="password" name="password">
+        <input type="password" name="password"><br>
         <label>コース:</label>
         <select name="course">
             {% for course in courses %}
             <option value="{{ course }}" {% if course == current_course %}selected{% endif %}>{{ course }}</option>
             {% endfor %}
-        </select>
+        </select><br><br>
         <input type="submit" value="修正内容を確認">
     </form>
 </body>

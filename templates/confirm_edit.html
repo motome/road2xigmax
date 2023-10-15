@@ -5,10 +5,10 @@
     <p>あなたのデータを次のとおり修正します。よろしいですか？</p>
 
     <ul>
-        <li><strong>名前:</strong> {{ temp_data.name }}</li>
-        <li><strong>誕生日:</strong> {{ temp_data.birthday }}</li>
-        <li><strong>メールアドレス:</strong> {{ temp_data.email }}</li>
-        <li><strong>コース:</strong> {{ temp_data.course }}</li>
+        <li><strong>名前:</strong> {{ temp_data.name }}</li><br>
+        <li><strong>誕生日:</strong> {{ temp_data.birthday }}</li><br>
+        <li><strong>メールアドレス:</strong> {{ temp_data.email }}</li><br>
+        <li><strong>コース:</strong> {{ temp_data.course }}</li><br>
     </ul>
 
     <form method="POST" action="{{ url_for('handle_confirm_edit') }}">
