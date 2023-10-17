@@ -217,7 +217,7 @@ def edit_data():
         
         return redirect(url_for("thank_you_edit"))
     else:
-        courses = ["Course 1", "Course 2", "Course 3", "Course 4", "Course 5"]
+        courses = ["鎌倉コース", "宇都宮コース", "館山コース", "磐梯コース", "八幡平コース"]
         return render_template("edit_data.html", courses=courses, name=user.name, birthday=user.birthday, email=user.email, current_course=user.course)
 
 @app.route("/reselect_course", methods=["GET", "POST"])
@@ -226,7 +226,7 @@ def reselect_course():
         # コースデータの更新をデータベースに保存する処理
         return redirect(url_for("confirm_course2"))
 
-    courses = ["Course 1", "Course 2", "Course 3", "Course 4", "Course 5"]
+    courses = ["鎌倉コース", "宇都宮コース", "館山コース", "磐梯コース", "八幡平コース"]
     return render_template("reselect_course.html", courses=courses)
 
 
